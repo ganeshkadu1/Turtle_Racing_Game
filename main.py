@@ -1,24 +1,40 @@
+import random
 from turtle import Turtle, Screen
 
-tim = Turtle()
-
-base_interior_angle = 180
-
-for i in range(1,11):
-    for j in range(i):
-        tim.right(base_interior_angle * i - base_interior_angle)
-        tim.forward(100)
-
-# tim.right(180-60)
-# tim.forward(100)
-# tim.right(180-60)
-# tim.forward(100)
-# tim.right(180-60)
-# tim.forward(100)
-
-
-
-
-
 screen = Screen()
+screen.setup(height=400, width=500)
+screen.title("Welcome to the turtle Race!")
+user_bet = screen.textinput(title="Bet: Which turtle will win?", prompt='Enter a color ["red", "black", "brown", "orange", "blue", "green"]: '  )
+colors = ["red", "black", "brown", "orange", "blue", "green"]
+y_position = [-70, -40, -10, 20, 50, 80]
+all_turtles = []
+is_race_on = False
+
+for turtle_index in range(0,6):
+    new_turtle = Turtle(shape="turtle")
+    new_turtle.color(colors[turtle_index])
+    new_turtle.penup()
+    new_turtle.goto(x=-230, y=y_position[turtle_index])
+    all_turtles.append(new_turtle)
+
+if user_bet:
+    is_race_on = True
+
+while is_race_on:
+    for turtle in all_turtles:
+        if turtle.xcor() > 230:
+            is_race_on = False
+            winning_color = turtle.pencolor()
+            if winning_color == user_bet:
+                print(f"You've won! The {winning_color} turtle is the winner")
+                is_race_on = bool(screen.textinput(title="Want to run again?",prompt=f"You've won! The {winning_color} turtle is the winner"  ))
+
+            else:
+                is_race_on = bool(screen.textinput(title="Want to run again?",prompt=f"You've Lost! The {winning_color} turtle is the winner"  ))
+                
+
+        rand_distance = random.randint(0, 10)
+        turtle.forward(rand_distance)
+
+
 screen.exitonclick()
